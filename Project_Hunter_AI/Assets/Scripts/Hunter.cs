@@ -16,6 +16,8 @@ public class Hunter : MonoBehaviour
 
     private List<Vector3> directions;
 
+    public bool isHunting;
+
     private void Awake()
     {
         movement = GameObject.FindGameObjectWithTag("Movement").GetComponent<Movement>();
@@ -27,43 +29,21 @@ public class Hunter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            //moveHunter(Vector3.up);
-            movement.moveEntity(transform.position, Vector3.up);
-        }
-        else if(Input.GetKeyDown(KeyCode.A))
-        {
-            moveHunter(Vector3.left);
-        }
-        else if(Input.GetKeyDown(KeyCode.S))
-        {
-            moveHunter(Vector3.down);
-        }
-        else if(Input.GetKeyDown(KeyCode.D))
-        {
-            moveHunter(Vector3.right);
-        }
-        */
         
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            positionateHunter();
-        }
     }
 
     public void positionateHunter()
     {
         bool obstructedTile;
 
-        do {
+        do
+        {
             obstructedTile = false;
 
             posX = Random.Range(0, 30);
@@ -71,11 +51,11 @@ public class Hunter : MonoBehaviour
 
             Vector3 tempVector3 = new Vector3(posX, posY, 0);
 
-            if(huntManager.hunts.Count > 0)
+            if (huntManager.hunts.Count > 0)
             {
-                foreach(GameObject hunt in huntManager.hunts)
+                foreach (GameObject hunt in huntManager.hunts)
                 {
-                    if(tempVector3 == hunt.transform.position)
+                    if (tempVector3 == hunt.transform.position)
                         obstructedTile = true;
                 }
             }
@@ -83,7 +63,7 @@ public class Hunter : MonoBehaviour
 
         transform.position = new Vector3(posX, posY, 0);
     }
-    
+
     public void randomMovement()
     {
         int randomIndex = Random.Range(0, 4);
@@ -98,5 +78,5 @@ public class Hunter : MonoBehaviour
 
         transform.position = targetPosition;
     }
-    
+
 }

@@ -14,7 +14,7 @@ public class GridGenerate : MonoBehaviour
         {
             for (int j = 0; j < 30; j++)
             {
-                if((i + j) % 2 == 0)
+                if ((i + j) % 2 == 0)
                 {
                     Instantiate(tile1, new Vector3(i, j, 0), Quaternion.identity);
                 }
@@ -29,6 +29,6 @@ public class GridGenerate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
