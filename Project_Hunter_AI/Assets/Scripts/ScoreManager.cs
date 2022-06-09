@@ -6,9 +6,9 @@ public class ScoreManager : MonoBehaviour
 {
     public GameObject huntCountHolder;
     public GameObject huntNoScript;
-    public HuntManager huntManager;
-
     public List<GameObject> huntHolderTemp;
+
+    public HuntManager huntManager;
 
     public int huntCount;
 

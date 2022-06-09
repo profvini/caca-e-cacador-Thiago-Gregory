@@ -6,16 +6,16 @@ public class Hunt : MonoBehaviour
 {
     private Movement movement;
 
-    public bool isAlive;
-    public bool isFleeing;
-
+    private int initialRotation;
     public int direction;
 
-    private int initialRotation;
+    public bool isAlive;
+    public bool isFleeing;
 
     private void Awake()
     {
         movement = GameObject.FindGameObjectWithTag("Movement").GetComponent<Movement>();
+
         isAlive = true;
     }
 
@@ -32,15 +32,6 @@ public class Hunt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isFleeing)
-        {
-            //gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 1);
-        }
-        else
-        {
-            //gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 1);
-        }
-
         if(direction > -1)
         {
             Quaternion tempRotation;
@@ -67,31 +58,4 @@ public class Hunt : MonoBehaviour
             transform.rotation = tempRotation;
         }
     }
-
-    public void randomMovement()
-    {
-        int randomIndex = Random.Range(0, 4);
-
-        movement.moveEntityRandomly("hunt", transform.position);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Range"))
-        {
-            //gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 1);
-        }
-    }
-
-
-
-    /*
-    public void moveHunter(Vector3 direction)
-    {
-        originalPosition = transform.position;
-        targetPosition = originalPosition + direction;
-
-        transform.position = targetPosition;
-    }
-    */
 }

@@ -227,7 +227,6 @@ GameObject:
   m_Component:
   - component: {fileID: 70343573}
   - component: {fileID: 70343570}
-  - component: {fileID: 70343571}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -247,20 +246,6 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &70343571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 70343569}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7031e94638856244b5f8e1499b75c3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tile1: {fileID: 1664672260145767652, guid: dc09ab4283654fd45be3b3e831eeeedd, type: 3}
-  tile2: {fileID: 5184098331705067682, guid: af0655baead811b4bbc479a6959befae, type: 3}
 --- !u!224 &70343573
 RectTransform:
   m_ObjectHideFlags: 0
@@ -850,10 +835,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bab8cbfa24e7bec478e0bd13a5af4e9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hunt: {fileID: 336603475717016635, guid: bd8923f2fa174f6459b10e69e09f336b, type: 3}
   hunter: {fileID: 1499194710}
-  huntToSpawn: 10
+  hunt: {fileID: 336603475717016635, guid: bd8923f2fa174f6459b10e69e09f336b, type: 3}
   hunts: []
+  huntToSpawn: 10
 --- !u!4 &1270949324
 Transform:
   m_ObjectHideFlags: 0
@@ -1662,8 +1647,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   huntCountHolder: {fileID: 1113518662972015335, guid: b6484eef3a4b9684daaf1ee842ac73de, type: 3}
   huntNoScript: {fileID: 336603475717016635, guid: ee531f2d15b3a324597f960d3e662fda, type: 3}
-  huntManager: {fileID: 1270949323}
   huntHolderTemp: []
+  huntManager: {fileID: 1270949323}
   huntCount: 0
 --- !u!4 &2111514915
 Transform:

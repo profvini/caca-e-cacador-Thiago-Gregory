@@ -8,29 +8,24 @@ public class EventSystem : MonoBehaviour
     public Hunter hunter;
     public HuntManager huntManager;
     public ScoreManager scoreManager;
+    public LoopButton loopSprite;
 
     public GameObject runtimeUI;
     public GameObject finishedUI;
-
     public GameObject textMoves;
     public GameObject textFinished;
     public GameObject huntDead;
-
-    public LoopButton loopSprite;
     public GameObject arrowSprite;
 
-    private GameObject[] hunts;
-
     private Movement movement;
+    private GameObject[] hunts;
 
     public bool executing;
     public float stepDelay;
-
     public int moves;
 
-    private int score;
-
     private bool finished;
+    private int score;
 
     private void Awake()
     {
@@ -44,8 +39,6 @@ public class EventSystem : MonoBehaviour
     void Start()
     {
         hunts = GameObject.FindGameObjectsWithTag("Hunt");
-
-        //StartCoroutine(simulation());
     }
 
     // Update is called once per frame
@@ -54,14 +47,10 @@ public class EventSystem : MonoBehaviour
         score = scoreManager.huntCount;
 
         if (Input.GetKeyDown(KeyCode.R))
-        {
             SceneManager.LoadScene("Scene");
-        }
 
         if (score >= huntManager.huntToSpawn)
-        {
             finished = true;
-        }
 
         if (finished)
         {
@@ -93,16 +82,6 @@ public class EventSystem : MonoBehaviour
                 restartCoroutine();
             }
         }
-        /*
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-                executeSimulation();
-
-            else if (Input.GetKeyDown(KeyCode.H))
-                manageCoroutine();
-        }
-        */
 
         textMoves.GetComponent<TMPro.TextMeshPro>().text = "Moves = " + moves;
     }
@@ -120,25 +99,14 @@ public class EventSystem : MonoBehaviour
             executing = !executing;
 
             if (executing)
-            {
                 StartCoroutine(simulation());
-            }
             else
-            {
                 StopAllCoroutines();
-            }
         }
     }
 
     public void executeSimulation()
     {
-        /*
-         * checkHuntIsInRange()
-         * detectCollision()
-         * callMoveEntity()
-         * 
-         */
-
         checkHuntIsInRange();
         detectCollision();
         callMoveEntity();
@@ -151,8 +119,6 @@ public class EventSystem : MonoBehaviour
         int hunterPosX = (int)hunter.transform.position.x;
         int hunterPosY = (int)hunter.transform.position.y;
 
-        //Debug.Log("############################");
-
         foreach(GameObject hunt in hunts)
         {
             hunt.GetComponent<Hunt>().isFleeing = false;
@@ -163,40 +129,11 @@ public class EventSystem : MonoBehaviour
                 {
                     Vector3 tempVector3 = new Vector3(x, y, 0);
 
-                    //Debug.Log("temp = " + tempVector3 + " hunt = " + hunt.transform.position);
-
                     if (hunt.transform.position == tempVector3)
-                    {
-                        //Debug.Log("################# Found Hunt!! " + tempVector3);
-
                         hunt.GetComponent<Hunt>().isFleeing = true;
-                    }
                 }
             }
         }
-        /*
-        for (int x = hunterPosX - 2; x <= hunterPosX + 2; x++)
-        {
-            for (int y = hunterPosY - 2; y <= hunterPosY + 2; y++)
-            {
-                Vector3 tempVector3 = new Vector3(x, y, 0);
-
-                foreach (GameObject hunt in hunts)
-                {
-                    Debug.Log("temp = " + tempVector3 + " hunt = " + hunt.transform.position);
-
-                    hunt.GetComponent<Hunt>().isBeingHunted = false;
-
-                    if (hunt.transform.position == tempVector3)
-                    {
-                        Debug.Log("################# Found Hunt!! " + tempVector3);
-
-                        hunt.GetComponent<Hunt>().isBeingHunted = true;
-                    }
-                }
-            }
-        }
-        */
     }
 
     void callMoveEntity()
@@ -204,14 +141,12 @@ public class EventSystem : MonoBehaviour
         int huntIndex = 0;
         foreach (GameObject hunt in hunts)
         {
-            //hunt.transform.position = movement.moveEntityRandomly("hunt", hunt.transform.position);
             if(hunt.GetComponent<Hunt>().isAlive)
                 hunt.transform.position = movement.moveHunt(huntIndex, hunt.transform.position, hunt.GetComponent<Hunt>().isFleeing);
 
             huntIndex++;
         }
 
-        //hunter.transform.position = movement.moveEntityRandomly("hunter", hunter.transform.position);
         hunter.transform.position = movement.moveHunter(hunter.transform.position);
 
     }
@@ -221,25 +156,21 @@ public class EventSystem : MonoBehaviour
         int hunterPosX = Mathf.RoundToInt(hunter.transform.position.x);
         int hunterPosY = Mathf.RoundToInt(hunter.transform.position.y);
 
-        //Debug.Log("#############################");
-
         for (int x = hunterPosX - 1; x <= hunterPosX + 1; x++)
         {
             for (int y = hunterPosY - 1; y <= hunterPosY + 1; y++)
             {
-                //Debug.Log("(" + ((hunterPosX+x)- hunterPosX) + ", " + ((hunterPosY+y)- hunterPosY) + ")");
-
                 foreach (GameObject hunt in hunts)
                 {
                     if (hunt.transform.position == new Vector3(x, y, 0))
                     {
                         float tempPosX = -0.5f + (scoreManager.huntCount * 3.3333f);
 
-                        //hunt.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 1);
-                        //hunt.SetActive(false);
                         hunt.GetComponent<Hunt>().isAlive = false;
                         hunt.transform.position = new Vector3(-15, 0, 0);
+
                         Destroy(scoreManager.huntHolderTemp[scoreManager.huntCount]);
+
                         Instantiate(huntDead, new Vector3(tempPosX, 32, -5), Quaternion.identity);
 
                         scoreManager.huntCount++;

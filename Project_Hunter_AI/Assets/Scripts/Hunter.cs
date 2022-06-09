@@ -6,17 +6,15 @@ public class Hunter : MonoBehaviour
 {
     public HuntManager huntManager;
 
-    private int posX;
-    private int posY;
-
-    private Movement movement;
+    public bool isHunting;
 
     private Vector3 originalPosition;
     private Vector3 targetPosition;
-
     private List<Vector3> directions;
+    private Movement movement;
 
-    public bool isHunting;
+    private int posX;
+    private int posY;
 
     private void Awake()
     {
@@ -59,7 +57,8 @@ public class Hunter : MonoBehaviour
                         obstructedTile = true;
                 }
             }
-        } while (obstructedTile);
+        }
+        while (obstructedTile);
 
         transform.position = new Vector3(posX, posY, 0);
     }

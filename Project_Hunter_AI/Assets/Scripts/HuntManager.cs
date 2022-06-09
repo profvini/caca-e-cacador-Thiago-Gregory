@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class HuntManager : MonoBehaviour
 {
-    public GameObject hunt;
     public GameObject hunter;
+    public GameObject hunt;
+
+    public List<GameObject> hunts;
 
     public int huntToSpawn;
 
     private int posX;
     private int posY;
-
-    public List<GameObject> hunts;
 
     private void Awake()
     {
