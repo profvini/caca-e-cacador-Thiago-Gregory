@@ -1,15 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EventSystem : MonoBehaviour
 {
     public Hunter hunter;
     public HuntManager huntManager;
     public ScoreManager scoreManager;
-    public GameObject textMoves;
 
-    public GameObject loopSprite;
+    public GameObject runtimeUI;
+    public GameObject finishedUI;
+
+    public GameObject textMoves;
+    public GameObject textFinished;
+    public GameObject huntDead;
+
+    public LoopButton loopSprite;
     public GameObject arrowSprite;
 
     private GameObject[] hunts;
@@ -38,7 +45,7 @@ public class EventSystem : MonoBehaviour
     {
         hunts = GameObject.FindGameObjectsWithTag("Hunt");
 
-        StartCoroutine(simulation());
+        //StartCoroutine(simulation());
     }
 
     // Update is called once per frame
@@ -46,23 +53,81 @@ public class EventSystem : MonoBehaviour
     {
         score = scoreManager.huntCount;
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("Scene");
+        }
+
         if (score >= huntManager.huntToSpawn)
         {
             finished = true;
         }
 
-        if (!finished)
+        if (finished)
+        {
+            executing = false;
+
+            textFinished.GetComponent<TMPro.TextMeshPro>().text = "Simulation finished\n\n\nTotal moves:\n" + moves;
+            runtimeUI.SetActive(false);
+            finishedUI.SetActive(true);
+
+            movement.GetComponent<Movement>().enabled = false;
+            hunter.gameObject.SetActive(false);
+        }
+
+        if (executing && !finished)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                stepDelay = 0.2f;
+                restartCoroutine();
+            }
+            else if(Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                stepDelay = 0.1f;
+                restartCoroutine();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                stepDelay = 0.05f;
+                restartCoroutine();
+            }
+        }
+        /*
+        else
         {
             if (Input.GetKeyDown(KeyCode.Space))
                 executeSimulation();
 
             else if (Input.GetKeyDown(KeyCode.H))
-            {
-                executing = !executing;
-            }
+                manageCoroutine();
         }
+        */
 
         textMoves.GetComponent<TMPro.TextMeshPro>().text = "Moves = " + moves;
+    }
+
+    void restartCoroutine()
+    {
+        manageCoroutine();
+        manageCoroutine();
+    }
+
+    public void manageCoroutine()
+    {
+        if (!finished)
+        {
+            executing = !executing;
+
+            if (executing)
+            {
+                StartCoroutine(simulation());
+            }
+            else
+            {
+                StopAllCoroutines();
+            }
+        }
     }
 
     public void executeSimulation()
@@ -136,11 +201,14 @@ public class EventSystem : MonoBehaviour
 
     void callMoveEntity()
     {
+        int huntIndex = 0;
         foreach (GameObject hunt in hunts)
         {
             //hunt.transform.position = movement.moveEntityRandomly("hunt", hunt.transform.position);
             if(hunt.GetComponent<Hunt>().isAlive)
-                hunt.transform.position = movement.moveHunt(hunt.transform.position, hunt.GetComponent<Hunt>().isFleeing);
+                hunt.transform.position = movement.moveHunt(huntIndex, hunt.transform.position, hunt.GetComponent<Hunt>().isFleeing);
+
+            huntIndex++;
         }
 
         //hunter.transform.position = movement.moveEntityRandomly("hunter", hunter.transform.position);
@@ -165,12 +233,14 @@ public class EventSystem : MonoBehaviour
                 {
                     if (hunt.transform.position == new Vector3(x, y, 0))
                     {
-                        float tempPosX = -0.5f + (scoreManager.huntCount * 3);
+                        float tempPosX = -0.5f + (scoreManager.huntCount * 3.3333f);
 
-                        hunt.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 1);
+                        //hunt.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 1);
                         //hunt.SetActive(false);
                         hunt.GetComponent<Hunt>().isAlive = false;
-                        hunt.transform.position = new Vector3(tempPosX, 32, -5);
+                        hunt.transform.position = new Vector3(-15, 0, 0);
+                        Destroy(scoreManager.huntHolderTemp[scoreManager.huntCount]);
+                        Instantiate(huntDead, new Vector3(tempPosX, 32, -5), Quaternion.identity);
 
                         scoreManager.huntCount++;
                     }

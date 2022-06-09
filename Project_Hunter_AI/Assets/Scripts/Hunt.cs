@@ -9,6 +9,10 @@ public class Hunt : MonoBehaviour
     public bool isAlive;
     public bool isFleeing;
 
+    public int direction;
+
+    private int initialRotation;
+
     private void Awake()
     {
         movement = GameObject.FindGameObjectWithTag("Movement").GetComponent<Movement>();
@@ -18,6 +22,11 @@ public class Hunt : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        direction = -1;
+
+        int tempRotZ = Random.Range(0, 4) * 90;
+
+        transform.rotation = Quaternion.Euler(0, 0, tempRotZ);
     }
 
     // Update is called once per frame
@@ -25,11 +34,37 @@ public class Hunt : MonoBehaviour
     {
         if (isFleeing)
         {
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 1);
+            //gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 1);
         }
         else
         {
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 1);
+            //gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 0, 0, 1);
+        }
+
+        if(direction > -1)
+        {
+            Quaternion tempRotation;
+
+            switch (direction)
+            {
+                case 0: //up
+                    tempRotation = Quaternion.Euler(0, 0, 0);
+                    break;
+                case 1: //down
+                    tempRotation = Quaternion.Euler(0, 0, 180);
+                    break;
+                case 2: //left
+                    tempRotation = Quaternion.Euler(0, 0, 90);
+                    break;
+                case 3: //right
+                    tempRotation = Quaternion.Euler(0, 0, -90);
+                    break;
+                default:
+                    tempRotation = Quaternion.Euler(0, 0, 0);
+                    break;
+            }
+
+            transform.rotation = tempRotation;
         }
     }
 
@@ -44,7 +79,7 @@ public class Hunt : MonoBehaviour
     {
         if (collision.CompareTag("Range"))
         {
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 1);
+            //gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 1, 1, 1);
         }
     }
 

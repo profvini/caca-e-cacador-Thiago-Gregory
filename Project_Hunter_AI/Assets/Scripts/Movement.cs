@@ -53,14 +53,20 @@ public class Movement : MonoBehaviour
     public Vector3 moveHunter(Vector3 originalPosition)
     {
         Vector3 tempTargetPosition;
+        Quaternion tempRotation;
+        float minDistance;
+        Vector3 tempDirection;
+        int moveToCenter;
+        int directionIndex;
 
         do
         {
-            float minDistance = 9999;
+            directionIndex = Random.Range(0, 4);
+            minDistance = 9999;
+            tempDirection = directions[directionIndex];
+            moveToCenter = Random.Range(1, 6);
 
-            Vector3 tempDirection = directions[Random.Range(0, 4)];
-
-            int moveToCenter = Random.Range(1, 6);
+            //Debug.Log("R = " + directionIndex);
 
             if (moveToCenter == 1)
             {
@@ -70,6 +76,7 @@ public class Movement : MonoBehaviour
                     {
                         minDistance = Vector3.Distance(hunter.transform.position + directions[i], centerPoint);
                         tempDirection = directions[i];
+                        directionIndex = i;
                     }
                 }
             }
@@ -87,6 +94,7 @@ public class Movement : MonoBehaviour
                             //minDistance = hunter.transform.position + directions[i] - hunt.transform.position;
                             minDistance = Vector3.Distance(hunter.transform.position + directions[i], hunt.transform.position);
                             tempDirection = directions[i];
+                            directionIndex = i;
                         }
                         else
                         {
@@ -98,6 +106,7 @@ public class Movement : MonoBehaviour
                             {
                                 minDistance = Vector3.Distance(hunter.transform.position + directions[i], hunt.transform.position);
                                 tempDirection = directions[i];
+                                directionIndex = i;
                             }
                         }
                     }
@@ -112,18 +121,43 @@ public class Movement : MonoBehaviour
                 //Debug.Log("Out of Bounds!!");
             }
             */
+
+            
         }
         while (tempTargetPosition.x < 0 || tempTargetPosition.x > 29 || tempTargetPosition.y < 0 || tempTargetPosition.y > 29);
+
+        switch (directionIndex)
+        {
+            case 0: //up
+                tempRotation = Quaternion.Euler(0, 0, 0);
+                break;
+            case 1: //down
+                tempRotation = Quaternion.Euler(0, 0, 180);
+                break;
+            case 2: //left
+                tempRotation = Quaternion.Euler(0, 0, 90);
+                break;
+            case 3: //right
+                tempRotation = Quaternion.Euler(0, 0, -90);
+                break;
+            default:
+                tempRotation = Quaternion.Euler(0, 0, 0);
+                break;
+        }
+
+        hunter.transform.rotation = tempRotation;
 
         return tempTargetPosition;
     }
 
-    public Vector3 moveHunt(Vector3 originalPosition, bool isFleeing)
+    public Vector3 moveHunt(int huntIndex, Vector3 originalPosition, bool isFleeing)
     {
         Vector3 targetPosition;
         Vector3 tempDirection;
+        Quaternion tempRotation;
 
         bool targetObstructed;
+        int directionIndex;
 
         do
         {
@@ -133,7 +167,9 @@ public class Movement : MonoBehaviour
 
             targetObstructed = false;
 
-            tempDirection = directions[Random.Range(0, 4)];
+            directionIndex = Random.Range(0, 4);
+
+            tempDirection = directions[directionIndex];
 
             //if (tempTargetPosition.x > 0 || tempTargetPosition.x < 29 || tempTargetPosition.y > 0 || tempTargetPosition.y < 29)
 
@@ -167,6 +203,7 @@ public class Movement : MonoBehaviour
                 {
                     targetPosition = originalPosition + directions[i];
                     tempDistance = Vector3.Distance(originalPosition + directions[i], hunter.transform.position);
+                    //directionIndex = i;
 
                     //Debug.Log("DISTANCE = " + tempDistance);
 
@@ -176,6 +213,7 @@ public class Movement : MonoBehaviour
                     {
                         maxDistance = tempDistance;
                         tempDirection = directions[i];
+                        directionIndex = i;
                     }
                 }
             }
@@ -192,6 +230,28 @@ public class Movement : MonoBehaviour
                 }
             }
             */
+
+
+            switch (directionIndex)
+            {
+                case 0: //up
+                    tempRotation = Quaternion.Euler(0, 0, 0);
+                    break;
+                case 1: //down
+                    tempRotation = Quaternion.Euler(0, 0, 180);
+                    break;
+                case 2: //left
+                    tempRotation = Quaternion.Euler(0, 0, 90);
+                    break;
+                case 3: //right
+                    tempRotation = Quaternion.Euler(0, 0, -90);
+                    break;
+                default:
+                    tempRotation = Quaternion.Euler(0, 0, 0);
+                    break;
+            }
+
+            hunts[huntIndex].gameObject.transform.rotation = tempRotation;
         }
         while (targetObstructed || targetPosition.x < 0 || targetPosition.x > 29 || targetPosition.y < 0 || targetPosition.y > 29);
 

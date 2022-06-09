@@ -19,8 +19,8 @@ public class HuntManager : MonoBehaviour
         if (huntToSpawn < 5)
             huntToSpawn = 5;
 
-        else if (huntToSpawn > 11)
-            huntToSpawn = 11;
+        else if (huntToSpawn > 10)
+            huntToSpawn = 10;
     }
 
     // Start is called before the first frame update

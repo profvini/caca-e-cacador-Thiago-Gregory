@@ -6,27 +6,27 @@ public class LoopButton : MonoBehaviour
 {
     public EventSystem eventSystem;
 
-    private bool active;
+    public bool isActive;
 
     // Start is called before the first frame update
     void Start()
     {
-        active = false;
+        isActive = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (active)
+        if (isActive)
             GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
 
         else
-            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.66f);
+            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.6f);
     }
 
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
-        eventSystem.executing = !eventSystem.executing;
-        active = !active;
+        eventSystem.manageCoroutine();
+        isActive = !isActive;
     }
 }
